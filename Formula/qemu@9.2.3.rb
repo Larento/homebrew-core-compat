@@ -61,6 +61,31 @@ class QemuAT923 < Formula
     sha256 "81237c7b42dc0ffc8b32a2f5734e3480a3f9a470c50c14a9c4576a2561a35807"
   end
 
+  # Fix for Mac OS X 10.15 Catalina. Said to also work on 10.14 Mojave.
+  # Necessary to relax required XCode Clang version from 15 to 12.
+  #
+  # Source:
+  # https://github.com/koucyuu/qemu_catalina_patches/commit/3bd87e94a189e52897ac21ffaf0890aff26a4fa7
+  #
+  # Related issues on MacPorts:
+  # https://trac.macports.org/ticket/70694
+  # https://trac.macports.org/ticket/71593
+  patch :p0 do
+    url "https://github.com/koucyuu/qemu_catalina_patches/archive/3bd87e94a189e52897ac21ffaf0890aff26a4fa7.tar.gz"
+    sha256 "3cdbfbe054334f66c343b711421972a006235f7049776ace94f6e7a8bd967be8"
+    apply "patch-qemu-accel-hvf-hvf-all.diff",
+          "patch-qemu-audio-coreaudio.diff",
+          "patch-qemu-block-file-posix.diff",
+          "patch-qemu-include-qemu-osdep.diff",
+          "patch-qemu-meson.diff",
+          "patch-qemu-net-vmnet-bridged.diff",
+          "patch-qemu-net-vmnet-common.diff",
+          "patch-qemu-net-vmnet-host.diff",
+          "patch-qemu-net-vmnet-shared.diff",
+          "patch-qemu-target-i386-hvf-hvf.diff",
+          "patch-qemu-ui-cocoa.diff"
+  end
+
   def install
     ENV["LIBTOOL"] = "glibtool"
 
